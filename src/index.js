@@ -1,13 +1,35 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import "./index.css";
+import App from "./App";
+import reportWebVitals from "./reportWebVitals";
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+import { createStore, combineReducers } from "redux";
+import { Provider } from "react-redux";
+
+const authReducer = (state = { name: "Ahmad", Role: "seller" }, action) => {
+  switch (action.type) {
+    case "LOGGED_IN_USER":
+      return { ...state, ...action.payload };
+    case "LOGOUT":
+      return action.payload;
+    default:
+      return state;
+  }
+};
+
+const rootReducer = combineReducers({
+  user: authReducer,
+});
+
+const store = createStore(rootReducer);
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <App />
+    <Provider store={store}>
+      <App />
+    </Provider>
   </React.StrictMode>
 );
 
